@@ -1,0 +1,37 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import unittest
+import time
+
+class PasswordRecoveryTest(unittest.TestCase):
+    def setUp(self):
+        self.driver = webdriver.Chrome()
+
+    def test_password_recovery(self):
+        driver = self.driver
+        driver.get("http://tu_aplicacion.com/login")
+
+        # Iniciar proceso de recuperación de contraseña
+        forgot_password_link = driver.find_element(By.LINK_TEXT, "¿Olvidaste tu contraseña?")
+        forgot_password_link.click()
+
+        time.sleep(2)
+
+        # Ingresar el correo electrónico registrado
+        email_field = driver.find_element(By.NAME, "email")
+        email_field.send_keys("correo@valido.com")
+
+        submit_button = driver.find_element(By.XPATH, "//button[text()='Enviar']")
+        submit_button.click()
+
+        time.sleep(3)
+
+        # Verificar que el enlace de recuperación se envió correctamente
+        success_message = driver.find_element(By.ID, "mensaje_exito")  # Cambia por el ID del mensaje de éxito
+        self.assertTrue(success_message.is_displayed(), "No se envió el enlace de recuperación")
+
+    def tearDown(self):
+        self.driver.quit()
+
+if _name_ == "_main_":
+    unittest.main()

@@ -1,0 +1,40 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import unittest
+import time
+
+class LoginTest(unittest.TestCase):
+    def setUp(self):
+        # Configura el driver (por ejemplo, Chrome)
+        self.driver = webdriver.Chrome()  # Asegúrate de tener instalado el ChromeDriver en tu PATH
+
+    def test_login_with_valid_credentials(self):
+        driver = self.driver
+        driver.get("http://tu_aplicacion.com/login")  # URL de la página de inicio de sesión
+
+        # Encontrar y completar el campo de nombre de usuario
+        username_field = driver.find_element(By.NAME, "username")  # Cambia "username" por el nombre real del campo
+        username_field.send_keys("usuario_valido")
+
+        # Encontrar y completar el campo de contraseña
+        password_field = driver.find_element(By.NAME, "password")  # Cambia "password" por el nombre real del campo
+        password_field.send_keys("contraseña_valida")
+
+        # Hacer clic en el botón de inicio de sesión
+        login_button = driver.find_element(By.XPATH, "//button[text()='Iniciar sesión']")
+        login_button.click()
+
+        # Esperar a que se cargue la página principal
+        time.sleep(3)  # Asegúrate de que sea suficiente tiempo para que cargue
+
+        # Verificar que el usuario ha iniciado sesión (por ejemplo, verificando la presencia de un elemento)
+        home_page_element = driver.find_element(By.ID, "elemento_de_inicio")  # Cambia por un ID único en la página principal
+        self.assertTrue(home_page_element.is_displayed(), "El usuario no pudo iniciar sesión correctamente")
+
+    def tearDown(self):
+        # Cierra el navegador
+        self.driver.quit()
+
+if _name_ == "_main_":
+    unittest.main()
